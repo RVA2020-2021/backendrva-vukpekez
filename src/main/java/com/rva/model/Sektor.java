@@ -1,4 +1,6 @@
-package com.rva.jpa;
+package com.rva.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -24,6 +26,7 @@ public class Sektor implements Serializable {
 	private String oznaka;
 
 	//bi-directional many-to-one association to Radnik
+	@JsonIgnore
 	@OneToMany(mappedBy="sektor")
 	private List<Radnik> radniks;
 

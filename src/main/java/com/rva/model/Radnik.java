@@ -1,4 +1,4 @@
-package com.rva.jpa;
+package com.rva.model;
 
 import java.io.Serializable;
 import javax.persistence.*;

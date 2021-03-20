@@ -1,4 +1,6 @@
-package com.rva.jpa;
+package com.rva.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Obrazovanje.findAll", query="SELECT o FROM Obrazovanje o")
+@NamedQuery(name="Obrazovanje.findAll", query="select o from Obrazovanje o")
 public class Obrazovanje implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +29,7 @@ public class Obrazovanje implements Serializable {
 	private String stepenStrucneSpreme;
 
 	//bi-directional many-to-one association to Radnik
+	@JsonIgnore
 	@OneToMany(mappedBy="obrazovanje")
 	private List<Radnik> radniks;
 

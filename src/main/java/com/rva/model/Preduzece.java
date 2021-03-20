@@ -1,4 +1,6 @@
-package com.rva.jpa;
+package com.rva.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -28,6 +30,7 @@ public class Preduzece implements Serializable {
 	private String sediste;
 
 	//bi-directional many-to-one association to Sektor
+	@JsonIgnore
 	@OneToMany(mappedBy="preduzece")
 	private List<Sektor> sektors;
 
