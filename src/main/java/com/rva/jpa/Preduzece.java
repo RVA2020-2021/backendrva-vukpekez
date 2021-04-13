@@ -1,6 +1,7 @@
-package com.rva.model;
+package com.rva.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -11,13 +12,14 @@ import java.util.List;
  * The persistent class for the preduzece database table.
  * 
  */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @NamedQuery(name="Preduzece.findAll", query="SELECT p FROM Preduzece p")
 public class Preduzece implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PREDUZECE_ID_GENERATOR", sequenceName="PREDUZECE_SEQ")
+	@SequenceGenerator(name="PREDUZECE_ID_GENERATOR", sequenceName="PREDUZECE_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PREDUZECE_ID_GENERATOR")
 	private Integer id;
 

@@ -1,4 +1,6 @@
-package com.rva.model;
+package com.rva.jpa;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -8,13 +10,14 @@ import javax.persistence.*;
  * The persistent class for the radnik database table.
  * 
  */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @NamedQuery(name="Radnik.findAll", query="SELECT r FROM Radnik r")
 public class Radnik implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="RADNIK_ID_GENERATOR", sequenceName="RADNIK_SEQ")
+	@SequenceGenerator(name="RADNIK_ID_GENERATOR", sequenceName="RADNIK_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RADNIK_ID_GENERATOR")
 	private Integer id;
 

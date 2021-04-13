@@ -1,6 +1,7 @@
-package com.rva.model;
+package com.rva.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -11,13 +12,14 @@ import java.util.List;
  * The persistent class for the sektor database table.
  * 
  */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @NamedQuery(name="Sektor.findAll", query="SELECT s FROM Sektor s")
 public class Sektor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="SEKTOR_ID_GENERATOR", sequenceName="SEKTOR_SEQ")
+	@SequenceGenerator(name="SEKTOR_ID_GENERATOR", sequenceName="SEKTOR_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEKTOR_ID_GENERATOR")
 	private Integer id;
 
@@ -35,8 +37,7 @@ public class Sektor implements Serializable {
 	@JoinColumn(name="preduzece")
 	private Preduzece preduzece;
 
-	public Sektor() {
-	}
+	public Sektor() { }
 
 	public Integer getId() {
 		return this.id;
