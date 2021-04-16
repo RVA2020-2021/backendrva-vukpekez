@@ -2,7 +2,8 @@ package com.rva.controller;
 
 import com.rva.jpa.Preduzece;
 import com.rva.repository.PreduzeceRepo;
-import com.rva.repository.SektorRepo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.Collection;
 
 @CrossOrigin
 @RestController
+@Api(tags = {"Preduzece CRUD operacije"})
 public class PreduzeceController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -20,30 +22,32 @@ public class PreduzeceController {
     @Autowired
     private PreduzeceRepo repo;
 
-    @Autowired
-    private SektorRepo sektorRepo;
-
     @GetMapping("preduzece")
+    @ApiOperation(value = "Vraća kolekciju svih preduzeća iz baze podataka")
     private Collection<Preduzece> getPreduzeca() {
         return repo.findAll();
     }
 
     @GetMapping("preduzece/{id}")
+    @ApiOperation(value = "Vraća preduzeće iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
     private Preduzece getPreduzece(@PathVariable("id") Integer id) {
         return repo.getOne(id);
     }
 
     @GetMapping("preduzeceByNaziv/{naziv}")
+    @ApiOperation(value = "Vraća kolekciju svih preduzeća iz baze podataka koja u nazivu sadrže string vrednost prosleđenu kao path varijabla")
     private Collection<Preduzece> getPreduzeceByNaziv(@PathVariable("naziv") String naziv) {
         return repo.findByNazivContainsIgnoreCase(naziv);
     }
 
     @GetMapping("preduzeceByPIB/{pib}")
+    @ApiOperation(value = "Vraća preduzeće iz baze podataka čiji je PIB integer vrednost prosleđena kao path varijabla")
     private Preduzece getPreduzeceByPIB(@PathVariable("pib") Integer pib) {
         return repo.findByPib(pib);
     }
 
     @PostMapping("preduzece")
+    @ApiOperation(value = "Upisuje preduzeće u bazu podataka")
     private ResponseEntity<Preduzece> insertPreduzece(@RequestBody Preduzece preduzece) {
         if(!repo.existsById(preduzece.getId())) {
             repo.save(preduzece);
@@ -53,6 +57,7 @@ public class PreduzeceController {
     }
 
     @PutMapping("preduzece")
+    @ApiOperation(value = "Modifikuje postojeće preduzeće u bazi podataka")
     private ResponseEntity<Preduzece> updatePreduzece(@RequestBody Preduzece preduzece) {
         if(repo.existsById(preduzece.getId())) {
             repo.save(preduzece);
@@ -62,8 +67,12 @@ public class PreduzeceController {
     }
 
     @DeleteMapping("preduzece/{id}")
+    @ApiOperation(value = "Briše preduzeće i sektore sa radnicima koji pripadaju preduzeću iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
     private ResponseEntity<Preduzece> deletePreduzece(@PathVariable("id") Integer id) {
         if(repo.existsById(id)) {
+            jdbcTemplate.execute(
+                    "delete from radnik where sektor in (select sektor.id from sektor where preduzece=" + id + ")"
+            );
             jdbcTemplate.execute("delete from sektor where preduzece=" + id);
             repo.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
