@@ -1,6 +1,5 @@
 package com.rva.repository;
 
-import com.rva.jpa.Obrazovanje;
 import com.rva.jpa.Radnik;
 import com.rva.jpa.Sektor;
 
@@ -14,6 +13,5 @@ public interface RadnikRepo extends JpaRepository<Radnik, Integer> {
     Radnik findByBrojLk(Integer brojLk);
     @Query(value = "select * from radnik r join sektor s on r.sektor = s.id join preduzece p on p.id = s.preduzece where p.id = ?1", nativeQuery = true)
     Collection<Radnik> findByPreduzece(Integer id);
-    Collection<Radnik> findByObrazovanje(Obrazovanje obrazovanje);
     Collection<Radnik> findBySektor(Sektor sektor);
 }

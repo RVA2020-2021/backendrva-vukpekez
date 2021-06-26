@@ -59,13 +59,6 @@ public class RadnikController {
         return repo.findByPreduzece(id);
     }
 
-    @GetMapping("radnikByObrazovanje/{id}")
-    @ApiOperation(value = "VraÄ‡a kolekciju svih radnika koji imaju obrazovanje iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
-    private Collection<Radnik> getRadnikByObrazovanje(@PathVariable("id") Integer id) {
-        Obrazovanje obrazovanje = obrazovanjeRepo.getOne(id);
-        return repo.findByObrazovanje(obrazovanje);
-    }
-
     @GetMapping("radnikBySektor/{id}")
     @ApiOperation(value = "VraÄ‡a kolekciju svih radnika koji rade u sektoru iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
     private Collection<Radnik> getRadnikBySektor(@PathVariable("id") Integer id) {
