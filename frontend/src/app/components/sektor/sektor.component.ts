@@ -32,7 +32,7 @@ export class SektorComponent implements AfterViewInit, OnDestroy {
     this.dataSource.sort = this.sort;
     this.table.dataSource = this.dataSource;
 
-    this.sub = this.service.getAllSektor()
+    this.sub = this.service.getAllSektorListener()
       .subscribe(data => {
         this.dataSource!.data = data;
 

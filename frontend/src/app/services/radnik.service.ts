@@ -27,10 +27,7 @@ export class RadnikService {
   addRadnik(radnik: Radnik): Observable<any> {
     return this.http.post(`${RADNIK_URL}`, radnik)
       .pipe(tap(() => {
-          const data = this.data.value;
-          data.push(radnik);
-          const sorted = data.sort((a: Radnik, b: Radnik) => a.id! - b.id!);
-          this.data.next(sorted);
+          this.getRadnikBySektor(radnik.sektor.id!);
         }));
   }
 

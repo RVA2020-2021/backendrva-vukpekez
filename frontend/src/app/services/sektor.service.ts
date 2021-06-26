@@ -12,23 +12,24 @@ export class SektorService {
   data = new BehaviorSubject<Sektor[]>([]);
 
   constructor(private http: HttpClient) {
-    http.get<Sektor[]>(SEKTOR_URL)
+    this.getAllSektor();
+  }
+
+  getAllSektor(): void {
+    this.http.get<Sektor[]>(SEKTOR_URL)
       .subscribe(data => {
         this.data.next(data);
       });
   }
 
-  getAllSektor(): Observable<Sektor[]> {
+  getAllSektorListener(): Observable<Sektor[]> {
     return this.data.asObservable();
   }
 
   addSektor(sektor: Sektor): Observable<any> {
     return this.http.post(`${SEKTOR_URL}`, sektor)
       .pipe(tap(() => {
-          const data = this.data.value;
-          data.push(sektor);
-          const sorted = data.sort((a: Sektor, b: Sektor) => a.id! - b.id!);
-          this.data.next(sorted);
+          this.getAllSektor();
         }));
   }
 
