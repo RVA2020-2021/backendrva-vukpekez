@@ -1,0 +1,27 @@
+<div style="width: 100%; text-align: center;">
+    <h1 mat-dialog-title>{{flag == 'add' ? 'Dodaj' : flag == 'update' ? 'Izmeni' : 'Obriši'}} sektor</h1>
+</div>
+
+<form mat-dialog-content #formControl='ngForm'>
+    <mat-form-field appearance='outline' style="width: calc(100% / 3 * 2 - 10px); margin-right: 10px;">
+        <mat-label>Naziv</mat-label>
+        <input matInput required name="naziv" [(ngModel)]="dataDialog.naziv" [disabled]="flag === 'delete'">
+    </mat-form-field>
+    <mat-form-field appearance='outline' style="width: calc(100% / 3);">
+        <mat-label>Oznaka</mat-label>
+        <input matInput required name="oznaka" [(ngModel)]="dataDialog.oznaka" [disabled]="flag === 'delete'">
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Preduzece</mat-label>
+        <mat-select [(ngModel)]="dataDialog.preduzece" required name="preduzece" [compareWith]="compareFn" [disabled]="flag === 'delete'">
+            <mat-option *ngFor="let p of preduzeca$ | async" [value]="p">
+              {{ p.naziv }}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+</form>
+
+<div mat-dialog-actions [align]="'end'">
+    <button mat-button [disabled]="formControl.invalid" (click)='submit()'>{{flag === 'delete' ? 'Obriši' : 'Sačuvaj'}}</button>
+    <button mat-button mat-dialog-close>Poništi</button>
+</div>

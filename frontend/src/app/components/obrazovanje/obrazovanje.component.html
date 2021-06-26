@@ -1,0 +1,55 @@
+<mat-toolbar class="toolbarNew" color="primary">
+  <span class="title-center">Obrazovanje</span>
+</mat-toolbar>
+
+<mat-form-field appearance="outline" style="margin: 0 15px; width: calc(100% - 30px);">
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event.target!)">
+</mat-form-field>
+
+<table mat-table class="full-width-table" matSort aria-label="Elements">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+    <td mat-cell *matCellDef="let row">{{row.id}}</td>
+  </ng-container>
+  <ng-container matColumnDef="naziv">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Naziv</th>
+    <td mat-cell *matCellDef="let row">{{row.naziv}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="stepenStrucneSpreme">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Strucna sprema</th>
+    <td mat-cell *matCellDef="let row">{{row.stepenStrucneSpreme}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="opis">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Opis</th>
+    <td mat-cell *matCellDef="let row">{{row.opis}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>
+      <button mat-icon-button color="primary" (click)="openDialog('add')">
+        <mat-icon>add</mat-icon>
+      </button>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-icon-button color="primary" (click)="openDialog('update', row)">
+        <mat-icon aria-label="Edit">edit</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="openDialog('delete', row)">
+        <mat-icon aria-label="Delete">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator
+    #paginator
+    [pageIndex]="0"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 15]">
+</mat-paginator>
