@@ -1,11 +1,12 @@
 package com.rva.controller;
 
 import com.rva.jpa.Obrazovanje;
-import com.rva.jpa.Preduzece;
 import com.rva.jpa.Radnik;
+import com.rva.jpa.Sektor;
 import com.rva.repository.ObrazovanjeRepo;
-import com.rva.repository.PreduzeceRepo;
 import com.rva.repository.RadnikRepo;
+import com.rva.repository.SektorRepo;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -26,43 +26,53 @@ public class RadnikController {
     @Autowired
     private ObrazovanjeRepo obrazovanjeRepo;
 
+    @Autowired
+    private SektorRepo sektorRepo;
+    
     @GetMapping("radnik")
-    @ApiOperation(value = "Vraća kolekciju svih radnika iz baze podataka")
+    @ApiOperation(value = "VraÄ‡a kolekciju svih radnika iz baze podataka")
     private Collection<Radnik> getRadnici() {
         return repo.findAll();
     }
 
     @GetMapping("radnik/{id}")
-    @ApiOperation(value = "Vraća radnika iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "VraÄ‡a radnika iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
     private Radnik getRadnik(@PathVariable("id") Integer id) {
         return repo.getOne(id);
     }
 
     @GetMapping("radnikByPrezime/{prezime}")
-    @ApiOperation(value = "Vraća kolekciju svih sektora iz baze podataka čije prezime sadrži string vrednost prosleđenu kao path varijabla")
+    @ApiOperation(value = "VraÄ‡a kolekciju svih sektora iz baze podataka Ä�ije prezime sadrÅ¾i string vrednost prosleÄ‘enu kao path varijabla")
     private Collection<Radnik> getRadnikByPrezime(@PathVariable("prezime") String prezime) {
         return repo.findByPrezimeContainsIgnoreCase(prezime);
     }
 
     @GetMapping("radnikByBrojLk/{brojLk}")
-    @ApiOperation(value = "Vraća radnika iz baze podataka čiji je broj lične karte integer vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "VraÄ‡a radnika iz baze podataka Ä�iji je broj liÄ�ne karte integer vrednost prosleÄ‘ena kao path varijabla")
     private Radnik getRadnikByBrojLk(@PathVariable("brojLk") Integer brojLk) {
         return repo.findByBrojLk(brojLk);
     }
 
     @GetMapping("radnikByPreduzece/{id}")
-    @ApiOperation(value = "Vraća kolekciju svih radnika koji rade u sektorima koji pripadaju preduzecu iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "VraÄ‡a kolekciju svih radnika koji rade u sektorima koji pripadaju preduzecu iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
     private Collection<Radnik> getRadnikByPreduzece(@PathVariable("id") Integer id)  {
-        return repo.findBypreduze(id);
+        return repo.findByPreduzece(id);
     }
 
     @GetMapping("radnikByObrazovanje/{id}")
-    @ApiOperation(value = "Vraća kolekciju svih radnika koji imaju obrazovanje iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "VraÄ‡a kolekciju svih radnika koji imaju obrazovanje iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
     private Collection<Radnik> getRadnikByObrazovanje(@PathVariable("id") Integer id) {
         Obrazovanje obrazovanje = obrazovanjeRepo.getOne(id);
         return repo.findByObrazovanje(obrazovanje);
     }
 
+    @GetMapping("radnikBySektor/{id}")
+    @ApiOperation(value = "VraÄ‡a kolekciju svih radnika koji rade u sektoru iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
+    private Collection<Radnik> getRadnikBySektor(@PathVariable("id") Integer id) {
+    	Sektor sektor = sektorRepo.getOne(id);
+    	return repo.findBySektor(sektor);
+    }
+    
     @PostMapping("radnik")
     @ApiOperation(value = "Upisuje radnika u bazu podataka")
     private ResponseEntity<Radnik> insertRadnik(@RequestBody Radnik radnik) {
@@ -74,7 +84,7 @@ public class RadnikController {
     }
 
     @PutMapping("radnik")
-    @ApiOperation(value = "Modifikuje postojećeg radnika u bazi podataka")
+    @ApiOperation(value = "Modifikuje postojeÄ‡eg radnika u bazi podataka")
     private ResponseEntity<Radnik> updateRadnik(@RequestBody Radnik radnik) {
         if(repo.existsById(radnik.getId())) {
             repo.save(radnik);
@@ -84,7 +94,7 @@ public class RadnikController {
     }
 
     @DeleteMapping("radnik/{id}")
-    @ApiOperation(value = "Briše radnika iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "BriÅ¡e radnika iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
     private ResponseEntity<Radnik> deleteRadnik(@PathVariable("id") Integer id) {
         if(repo.existsById(id)) {
             repo.deleteById(id);
