@@ -12,23 +12,24 @@ export class PreduzeceService {
   data = new BehaviorSubject<Preduzece[]>([]);
 
   constructor(private http: HttpClient) {
-    http.get<Preduzece[]>(PREDUZECE_URL)
+    this.getAllPreduzece();
+  }
+
+  getAllPreduzece(): void {
+    this.http.get<Preduzece[]>(PREDUZECE_URL)
       .subscribe(data => {
         this.data.next(data);
       });
   }
 
-  getAllPreduzece(): Observable<Preduzece[]> {
+  getAllPreduzeceListener(): Observable<Preduzece[]> {
     return this.data.asObservable();
   }
 
   addPreduzece(preduzece: Preduzece): Observable<any> {
     return this.http.post(`${PREDUZECE_URL}`, preduzece)
       .pipe(tap(() => {
-          const data = this.data.value;
-          data.push(preduzece);
-          const sorted = data.sort((a: Preduzece, b: Preduzece) => a.id! - b.id!);
-          this.data.next(sorted);
+          this.getAllPreduzece();
         }));
   }
 

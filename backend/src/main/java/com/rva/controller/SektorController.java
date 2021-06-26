@@ -6,7 +6,6 @@ import com.rva.repository.PreduzeceRepo;
 import com.rva.repository.SektorRepo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.aspectj.bridge.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -30,31 +28,31 @@ public class SektorController {
     private PreduzeceRepo preduzeceRepo;
 
     @GetMapping("sektor")
-    @ApiOperation(value = "Vraća kolekciju svih sektora iz baze podataka")
+    @ApiOperation(value = "Vraca kolekciju svih sektora iz baze podataka")
     private Collection<Sektor> getSektori() {
         return sektorRepo.findAll();
     }
 
     @GetMapping("sektor/{id}")
-    @ApiOperation(value = "Vraća sektor iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "Vraca sektor iz baze podataka ciji je id vrednost prosledjena kao path varijabla")
     private Sektor getSektor(@PathVariable("id") Integer id) {
         return sektorRepo.getOne(id);
     }
 
     @GetMapping("sektorByNaziv/{naziv}")
-    @ApiOperation(value = "Vraća kolekciju svih sektora iz baze podataka koji u nazivu sadrže string vrednost prosleđenu kao path varijabla")
+    @ApiOperation(value = "Vraca kolekciju svih sektora iz baze podataka koji u nazivu sadrze string vrednost prosledjenu kao path varijabla")
     private Collection<Sektor> getSektorByNaziv(@PathVariable("naziv") String naziv) {
         return sektorRepo.findByNazivContainsIgnoreCase(naziv);
     }
 
     @GetMapping("sektorByOznaka/{oznaka}")
-    @ApiOperation(value = "Vraća kolekciju svih sektora iz baze podataka koji u oznaci sadrže string vrednost prosleđenu kao path varijabla")
+    @ApiOperation(value = "Vraca kolekciju svih sektora iz baze podataka koji u oznaci sadrze string vrednost prosledjenu kao path varijabla")
     private Collection<Sektor> getSektorByOznaka(@PathVariable("oznaka") String oznaka) {
         return sektorRepo.findByOznakaContainsIgnoreCase(oznaka);
     }
 
     @GetMapping("sektorByPreduzece/{id}")
-    @ApiOperation(value = "Vraća kolekciju svih sektora koji pripadaju preduzecu iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "Vraca kolekciju svih sektora koji pripadaju preduzecu iz baze podataka ciji je id vrednost prosledjena kao path varijabla")
     private Collection<Sektor> getSektorByPreduzece(@PathVariable("id") Integer id) {
         Preduzece preduzece = preduzeceRepo.getOne(id);
         return sektorRepo.findByPreduzece(preduzece);
@@ -63,15 +61,12 @@ public class SektorController {
     @PostMapping("sektor")
     @ApiOperation(value = "Upisuje sektor u bazu podataka")
     private ResponseEntity<Sektor> insertSektor(@RequestBody Sektor sektor) {
-        if(!sektorRepo.existsById(sektor.getId())) {
-            sektorRepo.save(sektor);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    	sektorRepo.save(sektor);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("sektor")
-    @ApiOperation(value = "Modifikuje postojeći sektor u bazi podataka")
+    @ApiOperation(value = "Modifikuje postojeci sektor u bazi podataka")
     private ResponseEntity<Sektor> updateSektor(@RequestBody Sektor sektor) {
         if(sektorRepo.existsById(sektor.getId())) {
             sektorRepo.save(sektor);
@@ -81,7 +76,7 @@ public class SektorController {
     }
 
     @DeleteMapping("sektor/{id}")
-    @ApiOperation(value = "Briše sektor i radnike sektora iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "Brise sektor i radnike sektora iz baze podataka ciji je id vrednost prosledjena kao path varijabla")
     private ResponseEntity<Sektor> deleteSektor(@PathVariable("id") Integer id) {
         if(sektorRepo.existsById(id)) {
             jdbcTemplate.execute("delete from radnik where sektor=" + id);

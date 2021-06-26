@@ -30,7 +30,7 @@ export class ObrazovanjeComponent implements AfterViewInit, OnDestroy {
     this.dataSource.sort = this.sort;
     this.table.dataSource = this.dataSource;
 
-    this.sub = this.service.getAllObrazovanje()
+    this.sub = this.service.getAllObrazovanjeListener()
       .subscribe(data => {
         this.dataSource!.data = data;
       });

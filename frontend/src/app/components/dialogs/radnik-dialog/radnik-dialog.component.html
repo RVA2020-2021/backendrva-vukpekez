@@ -17,7 +17,7 @@
         <input matInput type="number" required name="broj_lk" [(ngModel)]="dataDialog.brojLk" [disabled]="flag === 'delete'">
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>obrazovanje</mat-label>
+        <mat-label>Obrazovanje</mat-label>
         <mat-select [(ngModel)]="dataDialog.obrazovanje" required name="obrazovanje" [compareWith]="compareFn" [disabled]="flag === 'delete'">
             <mat-option *ngFor="let o of obrazovanja$ | async" [value]="o">
               {{ '('+o.stepenStrucneSpreme + ') ' + o.naziv  }}

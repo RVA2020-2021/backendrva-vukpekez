@@ -50,7 +50,7 @@ export class RadnikDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.obrazovanja$ = this.obrazovanjeService.getAllObrazovanje();
+    this.obrazovanja$ = this.obrazovanjeService.getAllObrazovanjeListener();
   }
 
   compareFn(a: Radnik, b: Radnik): boolean {

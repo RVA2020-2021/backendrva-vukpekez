@@ -12,23 +12,24 @@ export class ObrazovanjeService {
   data = new BehaviorSubject<Obrazovanje[]>([]);
 
   constructor(private http: HttpClient) {
-    this.http.get<Obrazovanje[]>(OBRAZOVANJE_URL)
-      .subscribe(data => {
-        this.data.next(data);
-      });
+    this.getAllObrazovanje();
   }
 
-  getAllObrazovanje(): Observable<Obrazovanje[]> {
+  getAllObrazovanje(): void {
+    this.http.get<Obrazovanje[]>(OBRAZOVANJE_URL)
+    .subscribe(data => {
+      this.data.next(data);
+    });
+  }
+
+  getAllObrazovanjeListener(): Observable<Obrazovanje[]> {
     return this.data.asObservable();
   }
 
   addObrazovanje(obrazovanje: Obrazovanje): Observable<any> {
     return this.http.post(`${OBRAZOVANJE_URL}`, obrazovanje)
       .pipe(tap(() => {
-          const data = this.data.value;
-          data.push(obrazovanje);
-          const sorted = data.sort((a: Obrazovanje, b: Obrazovanje) => a.id! - b.id!);
-          this.data.next(sorted);
+          this.getAllObrazovanje();
         }));
   }
 

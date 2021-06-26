@@ -23,41 +23,38 @@ public class PreduzeceController {
     private PreduzeceRepo repo;
 
     @GetMapping("preduzece")
-    @ApiOperation(value = "Vraća kolekciju svih preduzeća iz baze podataka")
+    @ApiOperation(value = "Vraca kolekciju svih preduzeca iz baze podataka")
     private Collection<Preduzece> getPreduzeca() {
         return repo.findAll();
     }
 
     @GetMapping("preduzece/{id}")
-    @ApiOperation(value = "Vraća preduzeće iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "Vraca preduzece iz baze podataka ciji je id vrednost prosledjena kao path varijabla")
     private Preduzece getPreduzece(@PathVariable("id") Integer id) {
         return repo.getOne(id);
     }
 
     @GetMapping("preduzeceByNaziv/{naziv}")
-    @ApiOperation(value = "Vraća kolekciju svih preduzeća iz baze podataka koja u nazivu sadrže string vrednost prosleđenu kao path varijabla")
+    @ApiOperation(value = "Vraca kolekciju svih preduzeca iz baze podataka koja u nazivu sadrze string vrednost prosledjenu kao path varijabla")
     private Collection<Preduzece> getPreduzeceByNaziv(@PathVariable("naziv") String naziv) {
         return repo.findByNazivContainsIgnoreCase(naziv);
     }
 
     @GetMapping("preduzeceByPIB/{pib}")
-    @ApiOperation(value = "Vraća preduzeće iz baze podataka čiji je PIB integer vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "Vraca preduzece iz baze podataka ciji je PIB integer vrednost prosledjena kao path varijabla")
     private Preduzece getPreduzeceByPIB(@PathVariable("pib") Integer pib) {
         return repo.findByPib(pib);
     }
 
     @PostMapping("preduzece")
-    @ApiOperation(value = "Upisuje preduzeće u bazu podataka")
+    @ApiOperation(value = "Upisuje preduzece u bazu podataka")
     private ResponseEntity<Preduzece> insertPreduzece(@RequestBody Preduzece preduzece) {
-        if(!repo.existsById(preduzece.getId())) {
-            repo.save(preduzece);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    	repo.save(preduzece);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("preduzece")
-    @ApiOperation(value = "Modifikuje postojeće preduzeće u bazi podataka")
+    @ApiOperation(value = "Modifikuje postojece preduzece u bazi podataka")
     private ResponseEntity<Preduzece> updatePreduzece(@RequestBody Preduzece preduzece) {
         if(repo.existsById(preduzece.getId())) {
             repo.save(preduzece);
@@ -67,7 +64,7 @@ public class PreduzeceController {
     }
 
     @DeleteMapping("preduzece/{id}")
-    @ApiOperation(value = "Briše preduzeće i sektore sa radnicima koji pripadaju preduzeću iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+    @ApiOperation(value = "Brise preduzece i sektore sa radnicima koji pripadaju preduzecu iz baze podataka ciji je id vrednost prosledjena kao path varijabla")
     private ResponseEntity<Preduzece> deletePreduzece(@PathVariable("id") Integer id) {
         if(repo.existsById(id)) {
             jdbcTemplate.execute(

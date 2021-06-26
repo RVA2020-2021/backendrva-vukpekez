@@ -49,7 +49,7 @@ export class SektorDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.preduzeca$ = this.preduzeceService.getAllPreduzece();
+    this.preduzeca$ = this.preduzeceService.getAllPreduzeceListener();
   }
 
   compareFn(a: Preduzece, b: Preduzece): boolean {

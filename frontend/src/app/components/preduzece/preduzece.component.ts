@@ -30,7 +30,7 @@ export class PreduzeceComponent implements AfterViewInit, OnDestroy {
     this.dataSource.sort = this.sort;
     this.table.dataSource = this.dataSource;
 
-    this.service.getAllPreduzece()
+    this.service.getAllPreduzeceListener()
       .subscribe(data => {
         this.dataSource!.data = data;
       });
